@@ -1,0 +1,9 @@
+governorate_id,state_universities,state_university_branches,state_students_male,state_students_female,state_staff_male,state_staff_female,private_universities,private_students_male,private_students_female,private_staff_male,private_staff_female
+1,2,1,15790,33423,1969,1119,0,0,0,0,0
+2,1,2,82374,58227,1169,616,0,0,0,0,0
+3,0,3,1397,7848,90,150,0,0,0,0,0
+4,0,1,0,3522,4,168,0,0,0,0,0
+5,0,1,0,560,0,35,0,0,0,0,0
+6,0,0,0,0,0,0,1,1836,1900,133,59
+7,0,1,0,1866,12,113,0,0,0,0,0
+10,0,1,0,1699,13,66,0,0,0,0,0
