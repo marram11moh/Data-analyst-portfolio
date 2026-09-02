@@ -3,13 +3,12 @@
 -- المصدر: كتاب إحصائي لوزارة الاقتصاد/GASTAT عن المنطقة الشرقية
 -- ============================================================
 
--- شغّلها مرة وحدة، أو أنشئ القاعدة من pgAdmin:
 -- CREATE DATABASE eastern_province;
 -- \c eastern_province
 
 -- ------------------------------------------------------------
--- جدول الأبعاد: المحافظات
--- ------------------------------------------------------------
+--  المحافظات
+
 CREATE TABLE governorates (
     governorate_id   INT PRIMARY KEY,
     governorate_name VARCHAR(50) NOT NULL
@@ -17,7 +16,7 @@ CREATE TABLE governorates (
 
 -- ------------------------------------------------------------
 -- السكان حسب المحافظة
--- ------------------------------------------------------------
+
 CREATE TABLE population (
     governorate_id   INT PRIMARY KEY REFERENCES governorates(governorate_id),
     num_houses       INT,
@@ -34,7 +33,7 @@ CREATE TABLE population (
 
 -- ------------------------------------------------------------
 -- المستشفيات حسب المحافظة
--- ------------------------------------------------------------
+
 CREATE TABLE hospitals (
     governorate_id       INT PRIMARY KEY REFERENCES governorates(governorate_id),
     population            INT,
@@ -52,7 +51,7 @@ CREATE TABLE hospitals (
 
 -- ------------------------------------------------------------
 -- مراكز الرعاية الصحية الأولية حسب المحافظة
--- ------------------------------------------------------------
+
 CREATE TABLE healthcare_centers (
     governorate_id        INT PRIMARY KEY REFERENCES governorates(governorate_id),
     population              INT,
@@ -66,8 +65,8 @@ CREATE TABLE healthcare_centers (
 );
 
 -- ------------------------------------------------------------
--- التعليم العالي حسب المحافظة (بعض المحافظات ما فيها جامعات - طبيعي)
--- ------------------------------------------------------------
+-- التعليم العالي حسب المحافظة 
+
 CREATE TABLE higher_education (
     governorate_id            INT PRIMARY KEY REFERENCES governorates(governorate_id),
     state_universities          INT,
@@ -85,7 +84,7 @@ CREATE TABLE higher_education (
 
 -- ------------------------------------------------------------
 -- التعليم العام (جدول موحّد: بنين/بنات x حكومي/أهلي x ابتدائي/متوسط/ثانوي)
--- ------------------------------------------------------------
+-
 CREATE TABLE education (
     education_id              SERIAL PRIMARY KEY,
     governorate_id             INT REFERENCES governorates(governorate_id),
@@ -102,7 +101,7 @@ CREATE TABLE education (
 
 -- ------------------------------------------------------------
 -- المرافق الخدمية (فروع/مكاتب جهات حكومية) حسب المحافظة
--- ------------------------------------------------------------
+
 CREATE TABLE service_facilities_by_governorate (
     governorate_id              INT PRIMARY KEY REFERENCES governorates(governorate_id),
     real_estate_dev_fund_branch   INT, real_estate_dev_fund_office  INT,
@@ -118,8 +117,8 @@ CREATE TABLE service_facilities_by_governorate (
 );
 
 -- ------------------------------------------------------------
--- المنشآت الاقتصادية حسب النشاط (على مستوى المنطقة، بدون تفصيل محافظات)
--- ------------------------------------------------------------
+-- المنشآت الاقتصادية حسب النشاط 
+
 CREATE TABLE economic_establishments (
     economic_activity  VARCHAR(100) PRIMARY KEY,
     private             INT,
@@ -130,7 +129,7 @@ CREATE TABLE economic_establishments (
 
 -- ------------------------------------------------------------
 -- المؤشرات الاقتصادية حسب النشاط (بالآلاف ريال، على مستوى المنطقة)
--- ------------------------------------------------------------
+
 CREATE TABLE economic_indicators (
     economic_activity            VARCHAR(100) PRIMARY KEY,
     revenue_thousand_sar           BIGINT,
@@ -139,9 +138,7 @@ CREATE TABLE economic_indicators (
 );
 
 -- ============================================================
--- تحميل البيانات (شغّلها من psql بعد تعديل PATH لمسار الملفات عندك)
--- الترتيب مهم بسبب الـ Foreign Keys
--- ============================================================
+
 \copy governorates FROM 'C:\SQL\eastern-province-project\governorates.csv' DELIMITER ',' CSV HEADER;
 \copy population FROM 'C:\SQL\eastern-province-project\population.csv' DELIMITER ',' CSV HEADER;
 \copy hospitals FROM 'C:\SQL\eastern-province-project\hospitals.csv' DELIMITER ',' CSV HEADER;
@@ -152,8 +149,3 @@ CREATE TABLE economic_indicators (
 \copy economic_establishments FROM 'C:\SQL\eastern-province-project\economic_establishments.csv' DELIMITER ',' CSV HEADER;
 \copy economic_indicators FROM 'C:\SQL\eastern-province-project\economic_indicators.csv' DELIMITER ',' CSV HEADER;
 
--- تحقق سريع
-SELECT 'population' t, COUNT(*) FROM population
-UNION ALL SELECT 'hospitals', COUNT(*) FROM hospitals
-UNION ALL SELECT 'education', COUNT(*) FROM education
-UNION ALL SELECT 'economic_establishments', COUNT(*) FROM economic_establishments;
